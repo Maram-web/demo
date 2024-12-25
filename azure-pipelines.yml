@@ -1,34 +1,36 @@
 trigger:
   branches:
     include:
-      - userr_branch # Ta branche de code
+      - userr_branch
 
 pool:
-  name: Default # Pool de ton agent (Default si configuré comme tel)
+  name: Default
 
 steps:
-  # Étape 1 : Vérifier Java (facultatif)
+  # Étape 1 : Vérification de Java (facultatif)
   - script: |
       java -version
     displayName: 'Vérification de la version Java'
 
-  # Étape 2 : Lancer Maven
+  # Étape 2 : Exécution des tests avec Maven
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'clean test'
       mavenVersionOption: 'Path'
-      mavenPath: '/opt/maven' # Corrige ici : chemin de Maven sans /bin
+      mavenPath: '/opt/maven'
       javaHomeOption: 'Path'
-      jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64' # Chemin vers JDK 17
+      jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64'
       mavenOptions: '-Xmx1024m'
-
-
-
 
   # Étape 3 : Publier les résultats des tests
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      failTaskOnFailedTests: true
+
+  # Étape 4 : Publier le rapport ExtentReports
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: 'ExtentReports'
+      targetPath: '$(System.DefaultWorkingDirectory)/target/ExtentReports.html'
