@@ -17,9 +17,11 @@ steps:
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'clean test'
-      javaHomeOption: 'Path'
+      javaHomeOption: 'Path' # Spécifie l'option Path pour le JDK
+      jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64/bin/java' # Chemin du JDK sur ton agent
       mavenOptions: '-Xmx1024m'
       mavenVersionOption: 'Default'
+
 
   # Étape 3 : Publier les résultats des tests
   - task: PublishTestResults@2
