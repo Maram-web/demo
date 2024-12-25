@@ -1,0 +1,29 @@
+trigger:
+  branches:
+    include:
+      - userr_branch # Ta branche de code
+
+pool:
+  name: Default # Pool de ton agent (Default si configuré comme tel)
+
+steps:
+  # Étape 1 : Vérifier Java (facultatif)
+  - script: |
+      java -version
+    displayName: 'Vérification de la version Java'
+
+  # Étape 2 : Lancer Maven
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean test'
+      javaHomeOption: 'Path'
+      mavenOptions: '-Xmx1024m'
+      mavenVersionOption: 'Default'
+
+  # Étape 3 : Publier les résultats des tests
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      failTaskOnFailedTests: true
