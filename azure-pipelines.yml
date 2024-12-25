@@ -18,11 +18,10 @@ steps:
       mavenPomFile: 'pom.xml'
       goals: 'clean test'
       mavenVersionOption: 'Path'
-      mavenPath: '/opt/maven/bin' # Chemin corrigé pour Maven
+      mavenPath: '/opt/maven' # Corrige ici : chemin de Maven sans /bin
       javaHomeOption: 'Path'
       jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64' # Chemin vers JDK 17
       mavenOptions: '-Xmx1024m'
-
 
 
 
