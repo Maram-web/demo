@@ -33,4 +33,5 @@ steps:
   - task: PublishBuildArtifacts@1
     inputs:
       artifactName: 'ExtentReports'
-      targetPath: '$(System.DefaultWorkingDirectory)/target' # Publier tout le
+      targetPath: '$(System.DefaultWorkingDirectory)/target' # Dossier où se trouve ExtentReports.html
+      pathToPublish: '$(System.DefaultWorkingDirectory)/target/ExtentReports.html' # Fichier à publier
