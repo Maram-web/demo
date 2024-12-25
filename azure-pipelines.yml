@@ -1,26 +1,29 @@
 trigger:
   branches:
     include:
-      - main
+      - userr_branch # Remplace par le nom de ta branche si différent
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default # Assure-toi que le pool correspond à celui où ton agent est enregistré
 
 steps:
-  - task: UseJavaVersion@1
-    inputs:
-      version: '17'
-      architecture: 'x64'
+  # Étape 1 : Vérifier Java (optionnel)
+  - script: |
+      java -version
+    displayName: 'Vérification de la version Java'
 
+  # Étape 2 : Lancer Maven
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'clean test'
-      javaHomeOption: 'JDKVersion'
-      jdkVersion: '17'
-      jdkArchitecture: 'x64'
+      javaHomeOption: 'Path' # Utilise la version configurée dans l'agent
+      mavenOptions: '-Xmx1024m'
+      mavenVersionOption: 'Default'
 
+  # Étape 3 : Publier les résultats des tests
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      failTaskOnFailedTests: true
