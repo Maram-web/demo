@@ -34,3 +34,8 @@ steps:
     inputs:
       artifactName: 'ExtentReports'
       targetPath: '$(System.DefaultWorkingDirectory)/target/ExtentReports.html'
+  - task: PublishHtmlReport@1
+    inputs:
+      reportDir: '$(System.DefaultWorkingDirectory)/target' # Dossier contenant le rapport ExtentReports.html
+      reportTitle: 'Rapport ExtentReports' # Titre du rapport affiché dans Azure DevOps
+      reportFiles: 'ExtentReports.html' # Nom du fichier HTML à publier
