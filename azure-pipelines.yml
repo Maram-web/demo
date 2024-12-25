@@ -1,10 +1,10 @@
 trigger:
   branches:
     include:
-      - userr_branch # Remplace par le nom de ta branche si différent
+      - userr_branch # Assure-toi que c'est bien le nom exact de ta branche
 
 pool:
-  name: Default # Assure-toi que le pool correspond à celui où ton agent est enregistré
+  name: Default # Vérifie que ton agent est bien enregistré dans ce pool
 
 steps:
   # Étape 1 : Vérifier Java (optionnel)
@@ -12,18 +12,24 @@ steps:
       java -version
     displayName: 'Vérification de la version Java'
 
-  # Étape 2 : Lancer Maven
-  - task: Maven@3
+  # Étape 2 : Télécharger le code source
+  - checkout: self
+    displayName: 'Téléchargement du code source'
+
+  # Étape 3 : Lancer Maven
+  - task: Maven@4
     inputs:
-      mavenPomFile: 'pom.xml'
+      mavenPomFile: 'pom.xml' # Assure-toi que ce fichier est bien présent à la racine de ton dépôt
       goals: 'clean test'
-      javaHomeOption: 'Path' # Utilise la version configurée dans l'agent
+      javaHomeOption: 'Path' # Utilise la version Java installée sur ton agent
       mavenOptions: '-Xmx1024m'
       mavenVersionOption: 'Default'
+    displayName: 'Exécution des tests avec Maven'
 
-  # Étape 3 : Publier les résultats des tests
+  # Étape 4 : Publier les résultats des tests
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       failTaskOnFailedTests: true
+    displayName: 'Publication des résultats de tests'
