@@ -15,12 +15,13 @@ steps:
   # Étape 2 : Lancer Maven
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.xml'
+      mavenPomFile: 'pom.xml' # Chemin vers ton fichier pom.xml
       goals: 'clean test'
+      mavenVersionOption: 'Path' # Spécifie qu'on utilise un chemin personnalisé
+      mavenPath: '/opt/maven/bin/mvn' # Chemin vers la version de Maven installée
       javaHomeOption: 'Path'
-      jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64' # Chemin du JDK 17
+      jdkUserInputPath: '/usr/lib/jvm/java-17-openjdk-amd64' # Chemin vers JDK 17
       mavenOptions: '-Xmx1024m'
-      mavenVersionOption: 'Default'
 
 
 
