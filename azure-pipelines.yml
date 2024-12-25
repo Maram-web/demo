@@ -29,21 +29,9 @@ steps:
       testResultsFormat: 'JUnit'
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
 
-
-
-  - script: |
-      echo "Vérification du contenu du dossier target :"
-      ls -l $(System.DefaultWorkingDirectory)/target
-      echo "Vérification de l'existence du fichier ExtentReports.html :"
-      cat $(System.DefaultWorkingDirectory)/target/ExtentReports.html
-    displayName: "Debug : Vérification du fichier ExtentReports.html"
   # Étape 4 : Publier le rapport ExtentReports
   - task: PublishBuildArtifacts@1
     inputs:
       artifactName: 'ExtentReports'
       targetPath: '$(System.DefaultWorkingDirectory)/target/ExtentReports.html'
-  - task: PublishHtmlReport@1
-    inputs:
-      reportDir: '$(System.DefaultWorkingDirectory)/target' # Répertoire contenant le fichier HTML
-      reportFiles: 'ExtentReports.html' # Nom exact du fichier HTML
-      reportTitle: 'Rapport ExtentReports'
+
